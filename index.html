@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>ThreadPad</title>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!--Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Buenard:wght@400;700&family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+
+     <!-- JS Libraries -->
+    <script defer src="https://unpkg.com/turndown/dist/turndown.js"></script>
+    <script defer src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer@master/HtmlSanitizer.js"></script>
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+    <!-- SimpleBar core -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+    <script  src="https://kit.fontawesome.com/b5e891a07f.js" crossorigin="anonymous"></script>
+
+    <!--CSS -->
+    <link rel="stylesheet" href="thread.css">
+
+</head>
+
+<body>
+
+        <div class="container">
+
+        <div class="topbar">
+            <div class="topbar-row">
+                <button class="topbar-button" onclick="toggleToolbar(event)" type="button"><i class="fas fa-exchange-alt" ></i>&nbsp; <span class="switch-text"></span></button>
+                <!-- pip mode -->
+      <video id="video" controls height="360" width="640" hidden> </video>
+   
+            </div>
+        </div>
+        <!-- Toolbar html -->
+        <div class="toolbar">
+            <div class="popup">
+                <button type="button" class="popup-button toolbar-button"><i class="fas fa-heading"></i></button>
+                <div class="popup-window">
+                    <button title="Heading format" class="popup-item Heading" data-edit="formatBlock:h1">Heading</button>
+                    <button title="Subheading format" class="popup-item Subheading" data-edit="formatBlock:h2">Subheading</button>
+                    <button title="Body format" class="popup-item Body" data-edit="formatBlock:p">Body</button>
+                    <button title="Caption format" class="popup-item Caption" data-edit="formatBlock:h5">Caption</button>
+                </div>
+
+            </div>
+
+
+            <button title="Bold" class="toolbar-button" data-edit="bold"><i class="fas fa-bold"></i></button>
+            <button title="Italic" class="toolbar-button" data-edit="italic"><i class="fas fa-italic"></i></button>
+            <button title="Underline" class="toolbar-button" data-edit="underline"><i class="fas fa-underline"></i></button>
+            <button title="Quote" class="toolbar-button" data-edit="formatBlock:blockquote"><i class="fas fa-quote-right"></i></button>
+
+
+            <button title="Unordered list" class="toolbar-button" data-edit="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+            <button title="Ordered list" class="toolbar-button" data-edit="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+
+            <button title="Insert link" class="toolbar-button" type="button" data-edt="insertLink"><i class="fas fa-link"></i></button>
+            <div class="popup">
+                <button title="Image" type="button" class="popup-button toolbar-button no-caret"><i class="fas fa-image"></i></button>
+                <div class="popup-window">
+                    <label class="popup-button" for="imageUpload"><i class="fas fa-arrow-circle-up"></i>&nbsp; Upload Image</label>
+                    <input type="file" name="imageUpload" hidden id="imageUpload" accept=".gif,.jpg,.jpeg,.png">
+                </div>
+            </div>
+        </div>
+       
+        
+        <div id="editor" class="editor" data-simplebar data-simplebar-auto-hide="false" >
+            <div id="content" class="content" contenteditable="true">
+                <p>Start Typing...✏️</p>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="bottom-bar">
+        <div class="bottom-row">
+            <span id="counter">0</span>
+            <a href="https://notse.dev" target="_blank"><span class="notse-text">Notse</span> </a>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+<div id="optionsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <h3>Select an option</h3>
+    <button id="shareScreenBtn">Share Screen</button>
+    <button id="uploadVideoBtn">Upload Video</button>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="video/*" style="display:none" />
+
+ 
+    
+    <!-- ContextMenu -->
+    <div class="contextMenu">
+        <div id="cx_heading" class="menu_item submenu-list " >
+          <button class="menu_item-bold list-item dp-flex" data-textFormat="h1" data-edit="formatBlock:h1" data-title="headline">
+           <div> <i class="fa-solid fa-heading bold-icon " ></i>Heading</div><i class="fa-solid fa-angle-right"></i>
+          </button> 
+          <div class="menu_item--sublist-heading" >
+                <button class="menu_item-bold list-item " data-textFormat="h2" data-edit="formatBlock:h2" data-title="subheading"><i class="fa-solid fa-t bold-icon"></i>Sub-heading</button>
+                <button class="menu_item-bold list-item " data-textFormat="p" data-edit="formatBlock:p" data-title="body"><i class="fa-solid fa-paragraph bold-icon"></i>Body</button>
+                <button class="menu_item-bold list-item " data-textFormat="p" data-edit="formatBlock:h5" data-title="caption"><i class="fa-solid fa-comment bold-icon"></i>Caption</button>
+            </div> 
+        </div> 
+
+        <div  class="menu_item submenu-list" >
+            <button class="menu_item-bold list-item dp-flex " data-textFormat="ul" data-edit="insertUnorderedList" data-title="list">
+               <div> <i class="fa-solid fa-list bold-icon"></i>Unordered List</div><i class="fa-solid fa-angle-right"></i>
+            </button>
+            <div class="menu_item--sublist" >
+                <button class="menu_item-bold list-item " data-textFormat="ol" data-edit="insertOrderedList" data-title="Olist"><i class="fa-solid fa-list-ol bold-icon"></i>Ordered List</button>
+            </div> 
+            </div>
+        <div  class="menu_item" >
+            <button class="menu_item-bold list-item " data-textFormat="strong" data-edit="bold" data-title="bold"> <i class="fa-solid fa-bold bold-icon"></i>Bold</button>         
+        </div> 
+        <div  class="menu_item" >
+            <button class="menu_item-bold list-item " title="Quote" data-textFormat="blockquote" data-edit="formatBlock:blockquote" data-title="blockquote"> <i class="fa-solid fa-quote-right bold-icon"></i>Quote</button>
+        </div> 
+        <div  class="menu_item">
+            <button class="menu_item-bold list-item " data-textFormat="em" data-edit="italic" data-title="italic"><i class="fa-solid fa-italic bold-icon"></i>italic</button>
+        </div> 
+        <div class="menu_item">
+            <button class="menu_item-bold list-item " data-textFormat="u" data-edit="underline" data-title="underline" > <i class="fa-solid fa-underline bold-icon"></i>Underline</button>
+        </div> 
+        <div class="dp-flex-start context_btn">
+        <div class="menu_item">
+            <button class="menu-btn list-item" title="Insert link" data-textFormat="mark" data-edt="insertLink" data-title="insertLink"> <i class="fa-solid fa-link bold-icon"></i></button>
+        </div>          
+
+        <div class="menu_item">
+            <label  class="menu-btn list-item" for="imageUpload"><i class="fa-solid fa-image bold-icon" aria-hidden="true"></i></label>
+            <input type="file" name="imageUpload"  id="imageUpload" accept=".gif,.jpg,.jpeg,.png">
+        </div> 
+          <div class="menu_item">
+            <button class="menu-btn list-item" title="superscript" data-textFormat="superscript" data-edt="superscript" data-title="superscript"> <i class="fa-solid fa-superscript bold-icon"></i></button>
+        </div>       
+        </div>
+    </div>
+    <!-- setting menu -->
+     <div class="sidebar_container">
+         <div  class="sidebar">
+                <i class="fa-solid sidebar_btn fa-gear"></i>
+                <div class="sidebar_menu">
+                    <div class="menu-preferences">
+                        <button class="topbar-button" onclick="toggleRTL()" type="button"><i class="fas fa-exchange-alt"></i>&nbsp; RTL Mode</button>
+                        <button class="topbar-button" onclick="clearStorage()" type="button"><i class="fas fa-pencil-alt"></i>&nbsp; New Text</button>
+                        <button class="topbar-button" onclick="triggerImportFile()" type="button"><i class="fas fa-upload"></i>&nbsp; Import Text</button>
+                        <div class="dp-flex switch-container">
+                        <input id="import-file" type="file" accept=".md,.html">
+                         <label class="switch">
+                                 <input id="theme-switch" type="checkbox">
+                                  <div class="switch-slider" title="Theme switch"> <span class="sun"><i class="fas fa-sun"></i></span><span class="moon"><i class="fas fa-moon"></i></span></div>  
+                         </label>
+                              <!-- PIP Mode Button -->
+                          <div class="pip-container">
+                       <div class="button-container tooltip">
+                           <button id="Start-button" ><i class="fas fa-play"></i></button>
+                           <span class="tooltiptext"> Click To Play media in Picture In Picture Mode</span>       
+                       </div>
+                   </div>
+                   </div>
+                    </div>
+                    </div>
+                    <p ><i class="fas fa-upload"></i> <span class="export-headline">Export</span></p>
+                    <div class="menu-export">
+                        <button class="sidebar_item" onclick="printJS('content','html')"><i class="fas fa-file-pdf"></i>&nbsp; Print or save PDF</button>
+                        <button class="sidebar_item" onclick='downloadContent("html")'><i class="fas fa-file-code"></i>&nbsp; Download HTML</button>
+                        <button class="sidebar_item" onclick='downloadContent("txt")'><i class="fas fa-file-alt"></i>&nbsp; Download TXT</button>
+                        <button class="sidebar_item" onclick='downloadContent("md")'><i class="fas fa-file"></i>&nbsp; Download MD</button>
+                </div>
+            </div>
+     </div> 
+    <!-- thread JS -->
+    <script src="thread.js"></script>
+
+    <!-- Autosave -->
+    <script src="threadautosave.js"></script>
+
+</body>
+
+</html>
