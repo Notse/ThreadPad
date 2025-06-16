@@ -1,7 +1,7 @@
 # ThreadPad Open-source
  
 An open-source text editor that helps you focus on what matters.
-For more information or to install the Chrome extension, please visit [threadpad]([https://notse.github.io/ThreadPad/])
+For more information or to install the Chrome extension, please visit [threadpad](https://notse.github.io/ThreadPad/)
 
 **Version 1.4.2**
 
